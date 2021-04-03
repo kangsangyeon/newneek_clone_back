@@ -1,19 +1,23 @@
 package com.newneek_clone_back.entity;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor//자동생성자
-public class Article extends Timestamped{
+public class Article extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
 
     @Column(nullable = false)
-    private  String title;
+    private String title;
 
     @Column(nullable = true)
     private String image;
@@ -21,5 +25,9 @@ public class Article extends Timestamped{
     @Column(nullable = false)
     private String contents;
 
-
+    public Article(String title, String image, String contents) {
+        this.title = title;
+        this.image = image;
+        this.contents = contents;
+    }
 }
