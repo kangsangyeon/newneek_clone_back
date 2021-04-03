@@ -1,5 +1,7 @@
 package com.newneek_clone_back.entity;
 
+import com.newneek_clone_back.dto.ArticleRequestDto;
+import com.newneek_clone_back.service.ArticleCategoryService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,8 +30,15 @@ public class Article extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "CATEGORY_ID")
     private ArticleCategory category;
+
+    public Article(String title, String image, String contents, String categoryName, ArticleCategoryService categoryService) {
         this.title = title;
         this.image = image;
         this.contents = contents;
+        this.category = categoryService.findByName(categoryName);
+    }
+
+    public Article(ArticleRequestDto requestDto, ArticleCategoryService categoryService) {
+        this(requestDto.getTitle(), requestDto.getImage(), requestDto.getContents(), requestDto.getCategoryName(), categoryService);
     }
 }
