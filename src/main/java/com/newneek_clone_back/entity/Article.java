@@ -1,4 +1,4 @@
-package com.newneek_clone_back;
+package com.newneek_clone_back.entity;
 
 import lombok.NoArgsConstructor;
 
