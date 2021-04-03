@@ -17,7 +17,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @ResponseBody
-    @GetMapping("/api/articles")
+    @GetMapping(value = "/api/articles", produces = "application/json")
     public String getArticles() {
         JSONObject jsonObject = new JSONObject();
 
@@ -25,7 +25,7 @@ public class ArticleController {
     }
 
     @ResponseBody
-    @PostMapping("/api/articles")
+    @PostMapping(value = "/api/articles", produces = "application/json")
     public Article createArticle(@RequestBody ArticleRequestDto requestDto) {
         return articleService.create(requestDto);
     }
