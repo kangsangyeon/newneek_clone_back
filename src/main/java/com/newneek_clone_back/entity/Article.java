@@ -25,7 +25,9 @@ public class Article extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    public Article(String title, String image, String contents) {
+    @ManyToOne
+    @JoinColumn(name = "CATEGORY_ID")
+    private ArticleCategory category;
         this.title = title;
         this.image = image;
         this.contents = contents;
