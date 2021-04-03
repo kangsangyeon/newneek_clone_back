@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class ArticleCategory {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 

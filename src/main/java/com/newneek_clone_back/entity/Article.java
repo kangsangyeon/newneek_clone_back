@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor//자동생성자
 public class Article extends Timestamped {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
