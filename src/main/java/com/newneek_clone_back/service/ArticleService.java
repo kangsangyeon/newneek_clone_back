@@ -29,7 +29,8 @@ public class ArticleService {
         return articleRepository.findAllByOrderByCreatedAtDesc().orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public List<Article> findAllByCategoryOrderByCreatedAtDesc(ArticleCategory category) {
+    public List<Article> findAllByCategoryOrderByCreatedAtDesc(String categoryName) {
+        ArticleCategory category = categoryService.findByName(categoryName);
         return articleRepository.findAllByCategoryOrderByCreatedAtDesc(category).orElseThrow(() -> new IllegalArgumentException());
     }
 
@@ -37,7 +38,8 @@ public class ArticleService {
         return articleRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 
-    public Page<Article> findAllByCategoryOrderByCreatedAtDesc(ArticleCategory category, Pageable pageable) {
+    public Page<Article> findAllByCategoryOrderByCreatedAtDesc(String categoryName, Pageable pageable) {
+        ArticleCategory category = categoryService.findByName(categoryName);
         return articleRepository.findAllByCategoryOrderByCreatedAtDesc(category, pageable);
     }
 }
