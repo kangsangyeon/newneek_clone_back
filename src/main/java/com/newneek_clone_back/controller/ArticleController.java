@@ -22,9 +22,9 @@ public class ArticleController {
         List<ArticleSummaryResponseDto> articleSummaryList = articleService.getArticleSummuryList(category, page);
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("articleSummaryList", articleSummaryList);
         jsonObject.put("category", category);
         jsonObject.put("page", page);
+        jsonObject.put("articleSummaryList", articleSummaryList);
 
         return jsonObject.toString();
     }
