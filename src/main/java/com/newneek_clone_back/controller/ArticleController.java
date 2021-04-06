@@ -64,4 +64,14 @@ public class ArticleController {
         return articleService.create(requestDto);
     }
 
+    @ResponseBody
+    @GetMapping(value = "/api/search", produces = "application/json")
+    public String getArticleUsingKeywords(@RequestParam String keywords) {
+        List<ArticleSummaryResponseDto> articleList = articleService.getArticleSummaryListUsingKeywords(keywords);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("articleSummaryList", articleList);
+
+        return jsonObject.toString();
+    }
 }

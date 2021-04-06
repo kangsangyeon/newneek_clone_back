@@ -19,4 +19,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     Page<Article> findAllByCategoryOrderByCreatedAtDesc(ArticleCategory category, Pageable pageable);
 
     List<Article> findTop4ByCategoryOrderByCreatedAtDesc(ArticleCategory category);
+
+    List<Article> findAllByTitleContainingOrContentsContainingOrderByCreatedAtDesc(String title, String content);
 }
