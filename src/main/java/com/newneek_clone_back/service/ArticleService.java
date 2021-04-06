@@ -30,6 +30,10 @@ public class ArticleService {
         return newArticle;
     }
 
+    public Article findById(Long id) {
+        return articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+    }
+
     public List<Article> findAllByOrderByCreatedAtDesc() {
         return articleRepository.findAllByOrderByCreatedAtDesc().orElseThrow(() -> new IllegalArgumentException());
     }
@@ -64,5 +68,14 @@ public class ArticleService {
         articleList.forEach(article -> articleSummaryList.add(new ArticleSummaryResponseDto(article)));
 
         return articleSummaryList;
+    }
+
+    public List<ArticleSummaryResponseDto> getRelativeArticleSummaryList(ArticleCategory category) {
+        List<Article> relativeArticleList = articleRepository.findTop4ByCategoryOrderByCreatedAtDesc(category);
+
+        List<ArticleSummaryResponseDto> relativeArticleSummaryList = new ArrayList<>(relativeArticleList.size());
+        relativeArticleList.forEach(article -> relativeArticleSummaryList.add(new ArticleSummaryResponseDto(article)));
+
+        return relativeArticleSummaryList;
     }
 }

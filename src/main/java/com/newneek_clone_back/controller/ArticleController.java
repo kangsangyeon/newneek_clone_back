@@ -1,5 +1,6 @@
 package com.newneek_clone_back.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newneek_clone_back.dto.ArticleRequestDto;
 import com.newneek_clone_back.dto.ArticleSummaryResponseDto;
 import com.newneek_clone_back.entity.Article;
@@ -27,6 +28,32 @@ public class ArticleController {
         jsonObject.put("articleSummaryList", articleSummaryList);
 
         return jsonObject.toString();
+    }
+
+    @ResponseBody
+    @GetMapping(value = "/api/articles/{id}", produces = "application/json")
+    public String getArticleDetails(@PathVariable Long id) {
+        try {
+            Article article = articleService.findById(id);
+            List<ArticleSummaryResponseDto> relativeArticleSummaryList = articleService.getRelativeArticleSummaryList(article.getCategory());
+
+            ObjectMapper jsonMapper = new ObjectMapper();
+            String articleJson = jsonMapper.writeValueAsString(article);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("article", articleJson);
+            jsonObject.put("relativeArticleSummaryList", relativeArticleSummaryList);
+
+            return jsonObject.toString();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("success", false);
+        return jsonObject.toString();
+
     }
 
     @ResponseBody
