@@ -39,11 +39,8 @@ public class ArticleController {
             ArticleResponseDto articleResponse = new ArticleResponseDto(article);
             List<ArticleSummaryResponseDto> relativeArticleSummaryList = articleService.getRelativeArticleSummaryList(article.getCategory());
 
-            ObjectMapper jsonMapper = new ObjectMapper();
-            String articleJson = jsonMapper.writeValueAsString(articleResponse);
-
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("article", articleJson);
+            jsonObject.put("article", new JSONObject(articleResponse));
             jsonObject.put("relativeArticleSummaryList", relativeArticleSummaryList);
 
             return jsonObject.toString();
