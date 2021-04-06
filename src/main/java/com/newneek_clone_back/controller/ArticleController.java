@@ -2,6 +2,7 @@ package com.newneek_clone_back.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newneek_clone_back.dto.ArticleRequestDto;
+import com.newneek_clone_back.dto.ArticleResponseDto;
 import com.newneek_clone_back.dto.ArticleSummaryResponseDto;
 import com.newneek_clone_back.entity.Article;
 import com.newneek_clone_back.service.ArticleService;
@@ -35,10 +36,11 @@ public class ArticleController {
     public String getArticleDetails(@PathVariable Long id) {
         try {
             Article article = articleService.findById(id);
+            ArticleResponseDto articleResponse = new ArticleResponseDto(article);
             List<ArticleSummaryResponseDto> relativeArticleSummaryList = articleService.getRelativeArticleSummaryList(article.getCategory());
 
             ObjectMapper jsonMapper = new ObjectMapper();
-            String articleJson = jsonMapper.writeValueAsString(article);
+            String articleJson = jsonMapper.writeValueAsString(articleResponse);
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("article", articleJson);
