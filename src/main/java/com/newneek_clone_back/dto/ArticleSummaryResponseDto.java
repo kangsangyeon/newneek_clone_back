@@ -6,12 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticleSummaryResponseDto {
     private final int MAX_CONTENTS_LENGTH = 40;
+
+    private LocalDateTime createdAt;
 
     private Long id;
 
@@ -24,6 +28,7 @@ public class ArticleSummaryResponseDto {
     private String categoryName;
 
     public ArticleSummaryResponseDto(Article article) {
+        this.createdAt = article.getCreatedAt();
         this.id = article.getId();
         this.title = article.getTitle();
         this.image = article.getImage();
