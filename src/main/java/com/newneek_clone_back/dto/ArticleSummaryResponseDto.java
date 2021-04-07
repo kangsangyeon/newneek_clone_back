@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.time.LocalDateTime;
 
@@ -33,13 +36,22 @@ public class ArticleSummaryResponseDto {
         this.title = article.getTitle();
         this.image = article.getImage();
         this.categoryName = article.getCategory().getName();
+        this.contents = "";
+
+        // 가장 처음에 나오는 p태그 안의 내용을 보여줍니다.
+        Document doc = Jsoup.parse(article.getContents());
+        Element firstPTag = doc.selectFirst("p:nth-child(1)");
+        if (firstPTag == null)
+            return;
+
+        String contentsWithoutTags = firstPTag.text();
 
         // 본문이 글자 수 제한을 넘기지 않도록 합니다.
         if (article.getContents().length() > MAX_CONTENTS_LENGTH) {
-            this.contents = article.getContents().substring(0, MAX_CONTENTS_LENGTH);
+            this.contents = contentsWithoutTags.substring(0, MAX_CONTENTS_LENGTH);
             this.contents += "⋯";
         } else {
-            this.contents = article.getContents();
+            this.contents = contentsWithoutTags;
         }
     }
 
