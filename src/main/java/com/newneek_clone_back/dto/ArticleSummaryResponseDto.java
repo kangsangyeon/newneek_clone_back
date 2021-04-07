@@ -45,11 +45,19 @@ public class ArticleSummaryResponseDto {
 
         // 가장 처음에 나오는 p태그 안의 내용을 보여줍니다.
         Document doc = Jsoup.parse(article.getContents());
-        Element firstPTag = doc.selectFirst("p:nth-child(1)");
-        if (firstPTag == null)
-            return;
+        String contentsWithoutTags = "";
 
-        String contentsWithoutTags = firstPTag.text();
+        for (int i = 0; ; i++) {
+            String pSelector = String.format("p:nth-child(%d)", i + 1);
+            Element pTag = doc.selectFirst(pSelector);
+
+            if (pTag == null)
+                break;
+
+            contentsWithoutTags = pTag.text().trim();
+            if (contentsWithoutTags.isEmpty() == false)
+                break;
+        }
 
         // 본문이 글자 수 제한을 넘기지 않도록 합니다.
         if (contentsWithoutTags.length() > MAX_CONTENTS_LENGTH) {
