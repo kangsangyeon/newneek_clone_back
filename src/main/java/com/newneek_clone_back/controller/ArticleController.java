@@ -1,6 +1,7 @@
 package com.newneek_clone_back.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.newneek_clone_back.Const;
 import com.newneek_clone_back.dto.ArticleRequestDto;
 import com.newneek_clone_back.dto.ArticleResponseDto;
 import com.newneek_clone_back.dto.ArticleSummaryResponseDto;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = Const.ClientServerHost)
 @RequiredArgsConstructor
 @Controller
 public class ArticleController {
