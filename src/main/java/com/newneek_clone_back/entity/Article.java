@@ -1,5 +1,6 @@
 package com.newneek_clone_back.entity;
 
+import com.newneek_clone_back.dto.ArticleCrawlRequestDto;
 import com.newneek_clone_back.dto.ArticleRequestDto;
 import com.newneek_clone_back.service.ArticleCategoryService;
 import lombok.Getter;
@@ -44,6 +45,11 @@ public class Article extends Timestamped {
 
     public Article(ArticleRequestDto requestDto, ArticleCategoryService categoryService) {
         this(requestDto.getTitle(), requestDto.getImage(), requestDto.getContents(), requestDto.getCategoryName(), categoryService);
+    }
+
+    public Article(ArticleCrawlRequestDto requestDto, ArticleCategoryService categoryService) {
+        this(requestDto.getRequestDto(), categoryService);
+        this.crawledCreatedAt = requestDto.getCrawledCreatedAt();
     }
 
     public void update(ArticleRequestDto requestDto, ArticleCategoryService categoryService) {

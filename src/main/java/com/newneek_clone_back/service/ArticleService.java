@@ -1,6 +1,7 @@
 package com.newneek_clone_back.service;
 
 import com.newneek_clone_back.delegate.IArticleUpdateDelegate;
+import com.newneek_clone_back.dto.ArticleCrawlRequestDto;
 import com.newneek_clone_back.dto.ArticleRequestDto;
 import com.newneek_clone_back.dto.ArticleSummaryResponseDto;
 import com.newneek_clone_back.entity.Article;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -37,6 +39,13 @@ public class ArticleService {
         return newArticle;
     }
 
+    public Article create(ArticleCrawlRequestDto requestDto) {
+        Article newArticle = new Article(requestDto, categoryService);
+        articleRepository.save(newArticle);
+
+        return newArticle;
+    }
+
     @Transactional
     public void update(Article article, ArticleRequestDto requestDto) {
         article.update(requestDto, categoryService);
@@ -46,12 +55,7 @@ public class ArticleService {
     public void update(Article article, IArticleUpdateDelegate delegate) {
         delegate.update(article);
     }
-
-    @Transactional
-    public void updateCreatedAt(Article article, LocalDateTime newCreatedAt) {
-        article.setCreatedAt(newCreatedAt);
-    }
-
+    
     public Article findById(Long id) {
         return articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
     }

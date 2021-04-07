@@ -1,5 +1,6 @@
 package com.newneek_clone_back;
 
+import com.newneek_clone_back.dto.ArticleCrawlRequestDto;
 import com.newneek_clone_back.dto.ArticleRequestDto;
 import com.newneek_clone_back.entity.Article;
 import com.newneek_clone_back.service.ArticleService;
@@ -122,10 +123,8 @@ public class NewneekCloneBackApplication {
 
 
                 ArticleRequestDto requestDto = new ArticleRequestDto(title, image, contents, categoryName);
-                Article newArticle = articleService.create(requestDto);
-                articleService.update(newArticle, (article) -> {
-                    article.setCrawledCreatedAt(date);
-                });
+                ArticleCrawlRequestDto crawlRequestDto = new ArticleCrawlRequestDto(requestDto, date);
+                articleService.create(crawlRequestDto);
             }
 
             driver.close();
