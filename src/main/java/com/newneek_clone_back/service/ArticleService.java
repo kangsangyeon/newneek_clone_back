@@ -1,5 +1,6 @@
 package com.newneek_clone_back.service;
 
+import com.newneek_clone_back.delegate.IArticleUpdateDelegate;
 import com.newneek_clone_back.dto.ArticleRequestDto;
 import com.newneek_clone_back.dto.ArticleSummaryResponseDto;
 import com.newneek_clone_back.entity.Article;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -32,6 +35,21 @@ public class ArticleService {
         articleRepository.save(newArticle);
 
         return newArticle;
+    }
+
+    @Transactional
+    public void update(Article article, ArticleRequestDto requestDto) {
+        article.update(requestDto, categoryService);
+    }
+
+    @Transactional
+    public void update(Article article, IArticleUpdateDelegate delegate) {
+        delegate.update(article);
+    }
+
+    @Transactional
+    public void updateCreatedAt(Article article, LocalDateTime newCreatedAt) {
+        article.setCreatedAt(newCreatedAt);
     }
 
     public Article findById(Long id) {
@@ -90,6 +108,7 @@ public class ArticleService {
         class ArticleAndScorePair implements Comparable<ArticleAndScorePair> {
             private final Article article;
             private final Integer score;
+
             @Override
             public int compareTo(ArticleAndScorePair o) {
                 return this.score - o.score;

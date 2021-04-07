@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 @Getter
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticleResponseDto {
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     private Long id;
 
@@ -27,12 +27,16 @@ public class ArticleResponseDto {
     private String categoryName;
 
     public ArticleResponseDto(Article article) {
-        this.createdAt = article.getCreatedAt();
+        if (article.getCrawledCreatedAt() != null) {
+            this.createdAt = article.getCrawledCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        } else {
+            this.createdAt = article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        }
+
         this.id = article.getId();
         this.title = article.getTitle();
         this.image = article.getImage();
         this.categoryName = article.getCategory().getName();
-
         this.contents = article.getContents();
     }
 }

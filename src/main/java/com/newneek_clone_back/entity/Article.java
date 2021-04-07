@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -27,6 +28,9 @@ public class Article extends Timestamped {
     @Column(nullable = false, length = 10000)
     private String contents;
 
+    @Column(nullable = true)
+    private LocalDate crawledCreatedAt;
+
     @ManyToOne
     @JoinColumn(name = "CATEGORY_ID")
     private ArticleCategory category;
@@ -40,5 +44,12 @@ public class Article extends Timestamped {
 
     public Article(ArticleRequestDto requestDto, ArticleCategoryService categoryService) {
         this(requestDto.getTitle(), requestDto.getImage(), requestDto.getContents(), requestDto.getCategoryName(), categoryService);
+    }
+
+    public void update(ArticleRequestDto requestDto, ArticleCategoryService categoryService) {
+        this.title = requestDto.getTitle();
+        this.image = requestDto.getImage();
+        this.contents = requestDto.getContents();
+        this.category = categoryService.findByName(requestDto.getCategoryName());
     }
 }

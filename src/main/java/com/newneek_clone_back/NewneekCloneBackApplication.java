@@ -1,6 +1,7 @@
 package com.newneek_clone_back;
 
 import com.newneek_clone_back.dto.ArticleRequestDto;
+import com.newneek_clone_back.entity.Article;
 import com.newneek_clone_back.service.ArticleService;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -17,6 +18,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,6 +93,7 @@ public class NewneekCloneBackApplication {
                 String categoryName = "";
                 String image = "";
                 String contents = "";
+                LocalDate date;
 
                 //제목가지고 오기
                 WebElement postWebElement = driver.findElementByXPath("//*[@id=\"root\"]/div/section/div/header/h2");
@@ -98,6 +102,11 @@ public class NewneekCloneBackApplication {
                 //카테고리 가지고 오기
                 WebElement cateWebElement = driver.findElementByXPath("//*[@id=\"root\"]/div/section/div/header/a");
                 categoryName = cateWebElement.getText();
+
+                //날짜 가지고 오기
+                WebElement dateWebElement = driver.findElementByXPath("//*[@id=\"root\"]/div/section/div/header/time");
+                String dateText = dateWebElement.getText();
+                date = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 
                 //이미지 가지고 오기 /이미지가 없을 때를 대비
                 try {
@@ -113,7 +122,10 @@ public class NewneekCloneBackApplication {
 
 
                 ArticleRequestDto requestDto = new ArticleRequestDto(title, image, contents, categoryName);
-                articleService.create(requestDto);
+                Article newArticle = articleService.create(requestDto);
+                articleService.update(newArticle, (article) -> {
+                    article.setCrawledCreatedAt(date);
+                });
             }
 
             driver.close();

@@ -9,7 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class ArticleSummaryResponseDto {
     private final int MAX_CONTENTS_LENGTH = 40;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     private Long id;
 
@@ -31,7 +31,12 @@ public class ArticleSummaryResponseDto {
     private String categoryName;
 
     public ArticleSummaryResponseDto(Article article) {
-        this.createdAt = article.getCreatedAt();
+        if (article.getCrawledCreatedAt() != null) {
+            this.createdAt = article.getCrawledCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        } else {
+            this.createdAt = article.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        }
+
         this.id = article.getId();
         this.title = article.getTitle();
         this.image = article.getImage();
