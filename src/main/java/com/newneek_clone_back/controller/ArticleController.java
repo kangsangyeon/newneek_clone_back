@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = Const.ClientServerHost)
+@CrossOrigin(origins = Const.AllowOrigins)
 @RequiredArgsConstructor
 @Controller
 public class ArticleController {

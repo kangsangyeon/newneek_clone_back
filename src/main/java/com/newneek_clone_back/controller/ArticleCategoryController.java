@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin(origins = Const.ClientServerHost)
+@CrossOrigin(origins = Const.AllowOrigins)
 @RequiredArgsConstructor
 @Controller
 public class ArticleCategoryController {
