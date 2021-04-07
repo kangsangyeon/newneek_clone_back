@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -55,38 +53,38 @@ public class ArticleService {
     public void update(Article article, IArticleUpdateDelegate delegate) {
         delegate.update(article);
     }
-    
+
     public Article findById(Long id) {
         return articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public List<Article> findAllByOrderByCreatedAtDesc() {
-        return articleRepository.findAllByOrderByCreatedAtDesc().orElseThrow(() -> new IllegalArgumentException());
+    public List<Article> findAllByOrderByCrawledCreatedAtDesc() {
+        return articleRepository.findAllByOrderByCrawledCreatedAtDesc().orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public List<Article> findAllByCategoryOrderByCreatedAtDesc(String categoryName) {
+    public List<Article> findAllByCategoryOrderByCrawledCreatedAtDesc(String categoryName) {
         ArticleCategory category = categoryService.findByName(categoryName);
-        return articleRepository.findAllByCategoryOrderByCreatedAtDesc(category).orElseThrow(() -> new IllegalArgumentException());
+        return articleRepository.findAllByCategoryOrderByCrawledCreatedAtDesc(category).orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public Page<Article> findAllByOrderByCreatedAtDesc(Pageable pageable) {
-        return articleRepository.findAllByOrderByCreatedAtDesc(pageable);
+    public Page<Article> findAllByOrderByCrawledCreatedAtDesc(Pageable pageable) {
+        return articleRepository.findAllByOrderByCrawledCreatedAtDesc(pageable);
     }
 
-    public Page<Article> findAllByCategoryOrderByCreatedAtDesc(String categoryName, Pageable pageable) {
+    public Page<Article> findAllByCategoryOrderByCrawledCreatedAtDesc(String categoryName, Pageable pageable) {
         ArticleCategory category = categoryService.findByName(categoryName);
-        return articleRepository.findAllByCategoryOrderByCreatedAtDesc(category, pageable);
+        return articleRepository.findAllByCategoryOrderByCrawledCreatedAtDesc(category, pageable);
     }
 
     public List<ArticleSummaryResponseDto> getArticleSummuryList(String categoryName, Integer page) {
         List<Article> articleList;
 
         if (page == null) {
-            articleList = categoryName == null ? findAllByOrderByCreatedAtDesc() : findAllByCategoryOrderByCreatedAtDesc(categoryName);
+            articleList = categoryName == null ? findAllByOrderByCrawledCreatedAtDesc() : findAllByCategoryOrderByCrawledCreatedAtDesc(categoryName);
         } else {
             Pageable pageable = PageRequest.of(page, PAGE_SIZE);
 
-            Page<Article> articlePage = categoryName == null ? findAllByOrderByCreatedAtDesc(pageable) : findAllByCategoryOrderByCreatedAtDesc(categoryName, pageable);
+            Page<Article> articlePage = categoryName == null ? findAllByOrderByCrawledCreatedAtDesc(pageable) : findAllByCategoryOrderByCrawledCreatedAtDesc(categoryName, pageable);
             articleList = articlePage.getContent();
         }
 
@@ -97,7 +95,7 @@ public class ArticleService {
     }
 
     public List<ArticleSummaryResponseDto> getRelativeArticleSummaryList(ArticleCategory category) {
-        List<Article> relativeArticleList = articleRepository.findTop4ByCategoryOrderByCreatedAtDesc(category);
+        List<Article> relativeArticleList = articleRepository.findTop4ByCategoryOrderByCrawledCreatedAtDesc(category);
 
         List<ArticleSummaryResponseDto> relativeArticleSummaryList = new ArrayList<>(relativeArticleList.size());
         relativeArticleList.forEach(article -> relativeArticleSummaryList.add(new ArticleSummaryResponseDto(article)));
@@ -125,7 +123,7 @@ public class ArticleService {
         String[] keywordsSplitted = keywords.split(" ");
         Set<Article> containingAnyKeywordsArticleSet = new HashSet<>();
         for (String keyword : keywordsSplitted) {
-            List<Article> containingKeywordArticleList = articleRepository.findAllByTitleContainingOrContentsContainingOrderByCreatedAtDesc(keyword, keyword);
+            List<Article> containingKeywordArticleList = articleRepository.findAllByTitleContainingOrContentsContainingOrderByCrawledCreatedAtDesc(keyword, keyword);
             containingAnyKeywordsArticleSet.addAll(containingKeywordArticleList);
         }
 
