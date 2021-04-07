@@ -47,7 +47,7 @@ public class ArticleSummaryResponseDto {
         String contentsWithoutTags = firstPTag.text();
 
         // 본문이 글자 수 제한을 넘기지 않도록 합니다.
-        if (article.getContents().length() > MAX_CONTENTS_LENGTH) {
+        if (contentsWithoutTags.length() > MAX_CONTENTS_LENGTH) {
             this.contents = contentsWithoutTags.substring(0, MAX_CONTENTS_LENGTH);
             this.contents += "⋯";
         } else {
