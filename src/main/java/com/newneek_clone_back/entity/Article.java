@@ -24,7 +24,7 @@ public class Article extends Timestamped {
     @Column(nullable = true)
     private String image;
 
-    @Column(nullable = false, length = 5000)
+    @Column(nullable = false, length = 50000)
     private String contents;
 
     @ManyToOne
