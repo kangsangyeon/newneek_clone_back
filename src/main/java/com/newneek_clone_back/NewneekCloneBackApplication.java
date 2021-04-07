@@ -86,9 +86,15 @@ public class NewneekCloneBackApplication {
 
                 driver.get(detailsUrlList.get(i));
 
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/section/div/header/h2")));
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/section/div/header/a")));
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/section/div/div/div[1]")));
+                final String TITLE_SELECTOR = "#root > div > section > div > header > h2";
+                final String CATEGORY_SELECTOR = "#root > div > section > div > header > a";
+                final String CONTENTS_SELECTOR = "#root > div > section > div > div";
+                final String DATE_SELECTOR = "#root > div > section > div > header > time";
+                final String IMAGE_SELECTOR = "#root > div > section > div > div > div.post-body-thumb > img";
+
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(TITLE_SELECTOR)));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(CATEGORY_SELECTOR)));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(CONTENTS_SELECTOR)));
 
                 String title = "";
                 String categoryName = "";
@@ -97,28 +103,28 @@ public class NewneekCloneBackApplication {
                 LocalDate date;
 
                 //제목가지고 오기
-                WebElement postWebElement = driver.findElementByXPath("//*[@id=\"root\"]/div/section/div/header/h2");
+                WebElement postWebElement = driver.findElementByCssSelector(TITLE_SELECTOR);
                 title = postWebElement.getText();
 
                 //카테고리 가지고 오기
-                WebElement cateWebElement = driver.findElementByXPath("//*[@id=\"root\"]/div/section/div/header/a");
+                WebElement cateWebElement = driver.findElementByCssSelector(CATEGORY_SELECTOR);
                 categoryName = cateWebElement.getText();
 
                 //날짜 가지고 오기
-                WebElement dateWebElement = driver.findElementByXPath("//*[@id=\"root\"]/div/section/div/header/time");
+                WebElement dateWebElement = driver.findElementByCssSelector(DATE_SELECTOR);
                 String dateText = dateWebElement.getText();
                 date = LocalDate.parse(dateText, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 
                 //이미지 가지고 오기 /이미지가 없을 때를 대비
                 try {
-                    WebElement imageWebElement = driver.findElementByXPath("//*[@id=\"root\"]/div/section/div/div/div[1]/img");
+                    WebElement imageWebElement = driver.findElementByCssSelector(IMAGE_SELECTOR);
                     image = imageWebElement.getAttribute("src");
 
                 } catch (NoSuchElementException e) {
                 }
 
                 //내용 가지고 오기
-                WebElement contentWebElement = driver.findElementByXPath("//*[@id=\"root\"]/div/section/div/div/div[1]");
+                WebElement contentWebElement = driver.findElementByCssSelector(CONTENTS_SELECTOR);
                 contents = contentWebElement.getAttribute("innerHTML");
 
 
