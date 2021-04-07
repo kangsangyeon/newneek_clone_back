@@ -64,7 +64,9 @@ public class NewneekCloneBackApplication {
 
             for (int i = 0; i < 15; i++) {
                 driver.findElementByClassName("loadmore").sendKeys(Keys.ENTER);
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("loadmore")));
+
+                String waitTargetSelector = String.format(".card:nth-child(%d)", 12 + 12 * (i + 1));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(waitTargetSelector)));
             }
 
             //각 카드 href로 들어가기
