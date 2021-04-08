@@ -30,7 +30,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     Page<Article> findAllByCategoryOrderByCrawledCreatedAtDesc(ArticleCategory category, Pageable pageable);
 
-    List<Article> findTop4ByCategoryOrderByCrawledCreatedAtDesc(ArticleCategory category);
+    List<Article> findTop5ByCategoryOrderByCrawledCreatedAtDesc(ArticleCategory category);
 
     List<Article> findAllByTitleContainingOrContentsContainingOrderByCrawledCreatedAtDesc(String title, String content);
 }

@@ -39,7 +39,7 @@ public class ArticleController {
         try {
             Article article = articleService.findById(id);
             ArticleResponseDto articleResponse = new ArticleResponseDto(article);
-            List<ArticleSummaryResponseDto> relativeArticleSummaryList = articleService.getRelativeArticleSummaryList(article.getCategory());
+            List<ArticleSummaryResponseDto> relativeArticleSummaryList = articleService.getRelativeArticleSummaryList(article);
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("article", new JSONObject(articleResponse));

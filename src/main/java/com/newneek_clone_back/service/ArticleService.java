@@ -94,11 +94,19 @@ public class ArticleService {
         return articleSummaryList;
     }
 
-    public List<ArticleSummaryResponseDto> getRelativeArticleSummaryList(ArticleCategory category) {
-        List<Article> relativeArticleList = articleRepository.findTop4ByCategoryOrderByCrawledCreatedAtDesc(category);
+    public List<ArticleSummaryResponseDto> getRelativeArticleSummaryList(Article article) {
+        // 지금 조회하는 게시물과 같은 카테고리에 포함되어 있으면서
+        // 게시물을 포함하지 않는 최신 게시물 4개를 가져옵니다.
+        List<Article> relativeArticleList = articleRepository.findTop5ByCategoryOrderByCrawledCreatedAtDesc(article.getCategory());
+
+        if (relativeArticleList.contains(article)) {
+            relativeArticleList.remove(article);
+        } else {
+            relativeArticleList.remove(relativeArticleList.size() - 1);
+        }
 
         List<ArticleSummaryResponseDto> relativeArticleSummaryList = new ArrayList<>(relativeArticleList.size());
-        relativeArticleList.forEach(article -> relativeArticleSummaryList.add(new ArticleSummaryResponseDto(article)));
+        relativeArticleList.forEach(item -> relativeArticleSummaryList.add(new ArticleSummaryResponseDto(item)));
 
         return relativeArticleSummaryList;
     }
