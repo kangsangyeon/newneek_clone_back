@@ -1,6 +1,5 @@
 package com.newneek_clone_back.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.newneek_clone_back.Const;
 import com.newneek_clone_back.dto.ArticleRequestDto;
 import com.newneek_clone_back.dto.ArticleResponseDto;
@@ -23,7 +22,7 @@ public class ArticleController {
     @ResponseBody
     @GetMapping(value = "/api/articles", produces = "application/json")
     public String getArticleSummaries(@RequestParam(required = false) String category, @RequestParam(required = false) Integer page) {
-        List<ArticleSummaryResponseDto> articleSummaryList = articleService.getArticleSummuryList(category, page);
+        List<ArticleSummaryResponseDto> articleSummaryList = articleService.getArticleSummaryList(category, page);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("category", category);
