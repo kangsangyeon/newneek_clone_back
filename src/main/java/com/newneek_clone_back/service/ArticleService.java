@@ -24,7 +24,7 @@ import java.util.*;
 public class ArticleService {
     private final int PAGE_SIZE = 12;
     private final int TITLE_CONTAINING_KEYWORDS_SCORE = 5;
-    private final int CONTENTS_CONTAINING_KEYWORDS_SCORE = 5;
+    private final int CONTENTS_CONTAINING_KEYWORDS_SCORE = 1;
 
     private final ArticleRepository articleRepository;
 
