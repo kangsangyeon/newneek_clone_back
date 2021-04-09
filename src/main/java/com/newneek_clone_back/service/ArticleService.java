@@ -58,27 +58,35 @@ public class ArticleService {
         return articleRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public List<Article> findAllByOrderByCrawledCreatedAtDesc() {
+    private List<Article> findAllByOrderByCrawledCreatedAtDesc() {
         return articleRepository.findAllByOrderByCrawledCreatedAtDesc().orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public List<Article> findAllByCategoryOrderByCrawledCreatedAtDesc(String categoryName) {
+    private List<Article> findAllByCategoryOrderByCrawledCreatedAtDesc(String categoryName) {
         ArticleCategory category = categoryService.findByName(categoryName);
         return articleRepository.findAllByCategoryOrderByCrawledCreatedAtDesc(category).orElseThrow(() -> new IllegalArgumentException());
     }
 
-    public Page<Article> findAllByOrderByCrawledCreatedAtDesc(Pageable pageable) {
+    private Page<Article> findAllByOrderByCrawledCreatedAtDesc(Pageable pageable) {
         return articleRepository.findAllByOrderByCrawledCreatedAtDesc(pageable);
     }
 
-    public Page<Article> findAllByCategoryOrderByCrawledCreatedAtDesc(String categoryName, Pageable pageable) {
+    private Page<Article> findAllByCategoryOrderByCrawledCreatedAtDesc(String categoryName, Pageable pageable) {
         ArticleCategory category = categoryService.findByName(categoryName);
         return articleRepository.findAllByCategoryOrderByCrawledCreatedAtDesc(category, pageable);
     }
 
-    public List<ArticleSummaryResponseDto> getArticleSummuryList(String categoryName, Integer page) {
+    /**
+     * 뉴스 요약본 목록을 조회하여 리턴하는 메소드입니다.
+     *
+     * @param categoryName 조회를 원하는 카테고리의 이름입니다. 전체 카테고리에 대해 조회를 원하는 경우 null값을 건네주어야 합니다.
+     * @param page         조회를 원하는 목록의 페이지입니다. 페이지네이션을 사용하지 않고 모든 게시물에 대한 조회를 원하는 경우 null값을 건네주어야 합니다.
+     * @return 뉴스 요약본 목록입니다.
+     */
+    public List<ArticleSummaryResponseDto> getArticleSummaryList(String categoryName, Integer page) {
         List<Article> articleList;
 
+        // 조건에 맞는 뉴스들의 목록을 조회합니다.
         if (page == null) {
             articleList = categoryName == null ? findAllByOrderByCrawledCreatedAtDesc() : findAllByCategoryOrderByCrawledCreatedAtDesc(categoryName);
         } else {
@@ -88,12 +96,19 @@ public class ArticleService {
             articleList = articlePage.getContent();
         }
 
+        // 조회해온 뉴스 목록을 간략화한 뉴스 목록으로 변환하여 리턴합니다.
         List<ArticleSummaryResponseDto> articleSummaryList = new ArrayList<>(articleList.size());
         articleList.forEach(article -> articleSummaryList.add(new ArticleSummaryResponseDto(article)));
 
         return articleSummaryList;
     }
 
+    /**
+     * 특정한 뉴스와 연관된 뉴스 요약본 4개 목록을 리턴합니다.
+     *
+     * @param article 특정한 뉴스입니다.
+     * @return 특정한 뉴스와 연관된 뉴스 요약본 4개를 포함하는 목록입니다.
+     */
     public List<ArticleSummaryResponseDto> getRelativeArticleSummaryList(Article article) {
         // 지금 조회하는 게시물과 같은 카테고리에 포함되어 있으면서
         // 게시물을 포함하지 않는 최신 게시물 4개를 가져옵니다.
@@ -105,12 +120,19 @@ public class ArticleService {
             relativeArticleList.remove(relativeArticleList.size() - 1);
         }
 
+        // 조회해온 뉴스 목록을 간략화한 뉴스 목록으로 변환하여 리턴합니다.
         List<ArticleSummaryResponseDto> relativeArticleSummaryList = new ArrayList<>(relativeArticleList.size());
         relativeArticleList.forEach(item -> relativeArticleSummaryList.add(new ArticleSummaryResponseDto(item)));
 
         return relativeArticleSummaryList;
     }
 
+    /**
+     * 키워드로 검색한 뉴스 요약본 목록을 조회합니다.
+     *
+     * @param keywords 검색하기를 원하는 키워드입니다.
+     * @return 검색된 뉴스 요약본 목록입니다.
+     */
     public List<ArticleSummaryResponseDto> getArticleSummaryListUsingKeywords(String keywords) {
 
         @Getter
